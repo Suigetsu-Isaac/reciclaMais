@@ -90,7 +90,7 @@ export default function Registro() {
       "type": selectedAccount
     }
 
-
+    console.log(newUser)
 
     user_table.push(newUser)
     salvarDados(user_table);

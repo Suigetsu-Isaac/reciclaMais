@@ -5,7 +5,7 @@ export declare global{
             Registro: undefined,
             AdmHome: undefined,
             UserHome: undefined,
-            Home: boolean
+            Home: object
         }
     }
 }

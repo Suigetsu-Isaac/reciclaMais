@@ -5,13 +5,24 @@ import CadMaterial from "../screen/CadMaterial";
 import Home from "../screen/Home";
 import { MaterialIcons } from '@expo/vector-icons';
 import Profile from "../screen/Profile";
+import { useEffect } from "react";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
 
+interface admProps{
 
+    
 
-export function HomeTabRoute(adm:boolean){
+}
+
+export function HomeTabRoute(props){
+
+    useEffect(()=>{
+
+        console.log("o adm está logado: "+ props.route.params.adm)
+
+    },[])
 
     return(
 
@@ -25,7 +36,8 @@ export function HomeTabRoute(adm:boolean){
         }
         
         >
-            {adm? 
+            
+            {props.route.params.adm? 
             <Screen
             name="AdmHome"
             component={CadMaterial}

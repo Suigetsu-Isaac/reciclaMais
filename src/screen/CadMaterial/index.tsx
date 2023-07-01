@@ -5,6 +5,7 @@ import styles from "./styles";
 import materiais from "./materiais";
 
 import ItemCad from "../../components/ItemCad";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -31,10 +32,19 @@ export default function CadMaterial() {
     )
   }
 
-  function salvar(){
+  async function salvar(){
+    
+    await AsyncStorage.setItem('materias',JSON.stringify(content))
+    
     listarMateriais()
   }
 
+
+  async function ler() {
+    
+    const res = await AsyncStorage.getItem('materiais')
+    console.log(res)
+  }
   function GetMaterial(){
 
     return(

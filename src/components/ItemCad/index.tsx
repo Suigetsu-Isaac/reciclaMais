@@ -20,8 +20,7 @@ export default function ItemCad(props: inputProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{props.nome}</Text>
-      <TextInput style={styles.input} placeholder="0,00 KG" 
-      keyboardAppearance="light" keyboardType="numeric"
+      <TextInput style={styles.input} placeholder="0,00 KG"
       onChangeText={(e) => props.setValue( e )} value={props.value}
       />
       

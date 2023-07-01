@@ -77,7 +77,7 @@ export default function Login() {
       console.log(isAdm)
       console.log('user: ',user)
     
-      navigation.navigate("Home",isAdm);
+      navigation.navigate("Home",{adm:isAdm});
     }
     
     
