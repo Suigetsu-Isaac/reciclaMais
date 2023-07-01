@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "../screen/Login";
 import Registro from "../screen/Registro";
 
-import { TabRoutes } from "./tab.routes";
+import { HomeTabRoute} from "./tab.routes";
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
@@ -30,6 +30,7 @@ export function StackRoutes(){
             }
             component={Registro}
             />
+            <Screen name="Home" options={{headerShown: false}} component={HomeTabRoute}/>
             
         </Navigator>
     )

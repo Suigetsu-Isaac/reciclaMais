@@ -1,22 +1,32 @@
 import { View, Text, TextInput } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 
 interface inputProps {
   nome: string;
-  content: string;
-  setContent: Function;
+  value: string,
+  setValue: (text: string) => void
+
 }
+
+
 
 import styles from "./styles";
 
 export default function ItemCad(props: inputProps) {
+
+
+
+
   return (
     <View style={styles.container}>
-      <Text>{props.nome}</Text>
-      <TextInput style={styles.input} placeholder="0,00 KG" value={props.content}
-      
-      onChangeText={(e) => props.setContent(e.toString())}
+      <Text style={styles.text}>{props.nome}</Text>
+      <TextInput style={styles.input} placeholder="0,00 KG" 
+      keyboardAppearance="light" keyboardType="numeric"
+      onChangeText={(e) => props.setValue( e )} value={props.value}
       />
+      
+      
+      
     </View>
   );
 }

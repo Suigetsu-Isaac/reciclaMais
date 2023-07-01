@@ -6,36 +6,80 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import styles from "./styles";
 import icon from "../../../assets/icon.png";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { RegistrarDados } from "../Registro";
 
-
-/**
- *
- * Centro : {
- *  Image Reciclar
- *  Text: Login
- *
- *  Input: usuário
- *  Input: Senha
- *
- *  Button: Entrar
- * }
- *  Esquerda :{ Touch: + Criar Conta}
- */
 
 export default function Login() {
 
   const navigation = useNavigation();
+  const [username,setUsername] = useState('');
+  const [password,setPassword] = useState('');
 
-  function onPressToHome(){
 
 
+  async function recuperarDados() {
+    const chave = 'lista_usuario';
+
+    try {
+      const valor = await AsyncStorage.getItem(chave);
+      if (valor !== null) {
+        console.log('Dados recuperados:', valor);
+        return valor;
+      } else {
+        console.log('Nenhum dado encontrado com a chave fornecida.');
+      }
+    } catch (error) {
+      console.log('Erro ao recuperar os dados:', error);
+    }
+  };
+
+  async function verificar() {
     
-    navigation.navigate("Home")
+    const registrados:Array<RegistrarDados> = JSON.parse(await recuperarDados());
+    let user:RegistrarDados
+    registrados.forEach(
+      (e) => {
+
+        if (e.username === username && e.password === password){
+          user = e;
+          return
+        }
+
+      }
+    )
+
+    if(user){
+      return user;
+    }else{
+      return null;
+    }
+     
+    
+
+  }
+
+
+
+
+  async function onPressToHome(){
+
+    const user:RegistrarDados = await verificar()
+
+    if(user){
+
+      const isAdm = user.type ==='adm'? true : false
+      console.log(isAdm)
+      console.log('user: ',user)
+    
+      navigation.navigate("Home",isAdm);
+    }
+    
     
   }
 
@@ -56,16 +100,20 @@ export default function Login() {
           placeholder="Usuário"
           keyboardType="email-address"
           textContentType="givenName"
+          value={username}
+          onChangeText={(e) => {setUsername(e)}}
         />
         <TextInput
           style={styles.input}
           placeholder="Senha"
           keyboardType="visible-password"
           textContentType="password"
+          value={password}
+          onChangeText={(e) => setPassword(e)}
         />
 
         <View style={styles.button}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressToHome}>
             <Text style={styles.text}>Entrar</Text>
           </TouchableOpacity>
         </View>

@@ -2,7 +2,9 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
     itensContainer: {
-      flexDirection: 'column',
+      width: 600,
+      marginRight: 10,
+      
       alignItems: 'flex-start',
       justifyContent: 'space-between',
     },
@@ -10,7 +12,7 @@ const styles = StyleSheet.create({
 
       alignSelf:'center',
 
-      margin: 50,
+      margin: 40,
 
       fontSize: 24,
 
@@ -56,7 +58,12 @@ const styles = StyleSheet.create({
         
         
         
-    }
+    },
+    small:{
+      fontSize: 18,
+      textAlign: 'center',
+      marginBottom: 20
+  }
   });
   
 export default styles;

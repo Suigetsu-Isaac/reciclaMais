@@ -1,32 +1,72 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import React, { useState } from "react";
-import ItemCad from "../../components/ItemCad";
+
 import styles from "./styles";
+import materiais from "./materiais";
+
+import ItemCad from "../../components/ItemCad";
 
 
 
-import materiais, {state} from "./materiais";
+
 
 export default function CadMaterial() {
 
-  const [content,setContent] = useState();
 
-  state({content,setContent})
+  const [content, setContent] = useState<string[]>([]);
+  
+
+
+  const handleTextChange = (index:number, text:string) => {
+    const updatedValues = [...content];
+    updatedValues[index] = text;
+    setContent(updatedValues);
+  };
+
+
+  function listarMateriais(){
+
+    content.map(
+      (valor,indice) => {console.log(`No indice ${indice} temos o valor: ${valor}`)}
+    )
+  }
+
+  function salvar(){
+    listarMateriais()
+  }
+
+  function GetMaterial(){
+
+    return(
+      <>
+      {
+      materiais.map(
+        (val,ind) =>{
+          return <ItemCad
+            key={ind}
+            nome={val}
+            value={content[ind]}
+            setValue={(text) => {handleTextChange(ind,text)}}
+          />
+        }
+      )}
+      </>
+    )
+
+  }
+
+
+  
+  
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.h1}>Valores Dos Materiais</Text>
+      <Text style={styles.small}> Preco por kilo *KG </Text>
       <View style={styles.itensContainer}>
-        
-        {
-          materiais.map(
-            (e) => {
-              return (
-                <ItemCad nome={e.name} content={e.content} setContent={e.setContent}/>
-              )
-            }
-          )
-        }
+
+       <GetMaterial />
 
       </View>
 
@@ -37,7 +77,7 @@ export default function CadMaterial() {
           </TouchableOpacity>
         </View>
         <View style={styles.button}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={salvar}>
             <Text style={styles.text}>Salvar</Text>
           </TouchableOpacity>
         </View>
