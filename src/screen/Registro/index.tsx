@@ -6,10 +6,11 @@ import styles from "./styles";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { user_table } from "../../../fakeDB/user_table";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { db } from "../../../firebaseConfig";
+import uuid from 'react-native-uuid';
 export interface RegistrarDados{
-  id: number,
+  id: string,
   username: string,
   phoneNumber: string,
   email:string,
@@ -21,7 +22,7 @@ export interface RegistrarDados{
 export default function Registro() {
 
   const [selectedAccount, setSelectedAccount] = useState('client');
-  const [userName, SetUserName] = useState('');
+  const [username, SetUsername] = useState('');
   const [phoneNumber, SetPhoneNumber] = useState('');
   const [email, SetEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,37 +30,59 @@ export default function Registro() {
   const navigation = useNavigation();
 
 
-
-  async function salvarDados(valor: Array<object>) {
-    const chave = 'lista_usuario';
-
-
-    try {
-      await AsyncStorage.setItem(chave, JSON.stringify(valor));
-      console.log('Dados salvos com sucesso!');
-    } catch (error) {
-      console.log('Erro ao salvar os dados:', error);
+  const id = uuid.v1();
+  
+  async function salvarDados() {
+        
+    
+    if(typeof id == "string"){
+     setDoc(doc(db,'user',id),{
+        id,
+        username,
+        phoneNumber,
+        email,
+        password,
+        type : selectedAccount
+      }).then(
+        ()=>{
+          console.log('data submited')
+        }
+      ).catch(
+        (error)=>{
+          console.log(error)
+        }
+      )
     }
+
+    
+
   }
 
 
-
-
-
   async function recuperarDados() {
-    const chave = 'lista_usuario';
+    let users=[]
+    
+    
+    const {docs} = await getDocs(collection(db, "user"))
 
-    try {
-      const valor = await AsyncStorage.getItem(chave);
-      if (valor !== null) {
-        console.log('Dados recuperados:', valor);
-        return valor;
-      } else {
-        console.log('Nenhum dado encontrado com a chave fornecida.');
+    docs.forEach((document) => {
+      users.push({...document.data,id:document.id})
+    })
+    
+    try{
+
+      if (users.length >0){
+        console.log("Documento data: ",users)
+        return users
+      }else{
+        console.log('Vazio')
       }
-    } catch (error) {
-      console.log('Erro ao recuperar os dados:', error);
+    }catch(error){
+      console.log("error ao recuperar dados: ",error)
     }
+    
+    
+    
   };
 
 
@@ -71,7 +94,7 @@ export default function Registro() {
 
   async function getUser() {
 
-    const valor:Array<RegistrarDados> =  JSON.parse( await recuperarDados());
+    const valor:Array<RegistrarDados> =   await recuperarDados();
 
     console.log("valor id :", valor[0].id)
 
@@ -83,7 +106,7 @@ export default function Registro() {
     id++;
     const newUser = {
       "id": id,
-      "username": userName,
+      "username": username,
       "phoneNumber": phoneNumber,
       "email": email,
       "password": password,
@@ -93,7 +116,7 @@ export default function Registro() {
     console.log(newUser)
 
     user_table.push(newUser)
-    salvarDados(user_table);
+    salvarDados();
     getUser();
 
   }
@@ -107,8 +130,8 @@ export default function Registro() {
           textContentType="name"
           keyboardType="ascii-capable"
           style={styles.input}
-          onChangeText={(e) => { SetUserName(e) }}
-          value={userName}
+          onChangeText={(e) => { SetUsername(e) }}
+          value={username}
         />
         <TextInput
           placeholder="Telefone"

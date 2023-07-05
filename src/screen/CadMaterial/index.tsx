@@ -7,7 +7,7 @@ import materiais from "./materiais";
 import ItemCad from "../../components/ItemCad";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
+import Logout from "../../components/Logout";
 
 
 
@@ -72,6 +72,7 @@ export default function CadMaterial() {
 
   return (
     <View style={styles.container}>
+      <Logout/>
       <Text style={styles.h1}>Valores Dos Materiais</Text>
       <Text style={styles.small}> Preco por kilo *KG </Text>
       <View style={styles.itensContainer}>

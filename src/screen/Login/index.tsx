@@ -6,14 +6,15 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import styles from "./styles";
 import icon from "../../../assets/icon.png";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 import { RegistrarDados } from "../Registro";
-
+import {app,db} from '../../../firebaseConfig';
+import { getDocs, collection } from 'firebase/firestore';
 
 export default function Login() {
 
@@ -21,27 +22,38 @@ export default function Login() {
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
 
-
+  
+ 
+   
 
   async function recuperarDados() {
-    const chave = 'lista_usuario';
+    let users=[]
+    
+    
+    const {docs} = await getDocs(collection(db, "user"))
 
-    try {
-      const valor = await AsyncStorage.getItem(chave);
-      if (valor !== null) {
-        console.log('Dados recuperados:', valor);
-        return valor;
-      } else {
-        console.log('Nenhum dado encontrado com a chave fornecida.');
+    docs.forEach((document) => {
+      users.push({...document.data(),id:document.id})
+    })
+    
+    try{
+
+      if (users.length >0){
+        console.log("Documento data: ",users)
+        return users
+      }else{
+        console.log('Vazio')
       }
-    } catch (error) {
-      console.log('Erro ao recuperar os dados:', error);
+    }catch(error){
+      console.log("error ao recuperar dados: ",error)
     }
+    
+    
+    
   };
-
   async function verificar() {
     
-    const registrados:Array<RegistrarDados> = JSON.parse(await recuperarDados());
+    const registrados:Array<RegistrarDados> = await recuperarDados()
     let user:RegistrarDados
     registrados.forEach(
       (e) => {
@@ -78,6 +90,8 @@ export default function Login() {
       console.log('user: ',user)
     
       navigation.navigate("Home",{adm:isAdm});
+    }else{
+      alert("Usuário não cadastrado")
     }
     
     
@@ -87,6 +101,13 @@ export default function Login() {
     
     navigation.navigate("Registro");
   }
+
+  useEffect(()=>{
+       
+      
+ 
+  
+},[])
 
   return (
     <View style={styles.container}>

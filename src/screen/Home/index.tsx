@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import Item from "../../components/Item";
 import styles from "./styles";
 import iconApi from "../../service/iconApi";
+import Logout from "../../components/Logout";
 
 export default function Home() {
   // Tratando os dados
@@ -34,6 +35,7 @@ export default function Home() {
         <Text style={[styles.text, { color: "black" }]}>
           Informe a Quantidade de Materiais
         </Text>
+        <Logout />
       </View>
       <View style={styles.itensContainer}>
         <Item
