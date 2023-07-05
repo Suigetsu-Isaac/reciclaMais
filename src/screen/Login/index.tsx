@@ -11,7 +11,6 @@ import styles from "./styles";
 import icon from "../../../assets/icon.png";
 import { useNavigation } from "@react-navigation/native";
 
-
 import { RegistrarDados } from "../Registro";
 import {app,db} from '../../../firebaseConfig';
 import { getDocs, collection } from 'firebase/firestore';
@@ -22,9 +21,6 @@ export default function Login() {
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
 
-  
- 
-   
 
   async function recuperarDados() {
     let users=[]
@@ -47,9 +43,7 @@ export default function Login() {
     }catch(error){
       console.log("error ao recuperar dados: ",error)
     }
-    
-    
-    
+        
   };
   async function verificar() {
     
@@ -71,13 +65,8 @@ export default function Login() {
     }else{
       return null;
     }
-     
-    
 
   }
-
-
-
 
   async function onPressToHome(){
 
@@ -92,9 +81,7 @@ export default function Login() {
       navigation.navigate("Home",{adm:isAdm});
     }else{
       alert("Usuário não cadastrado")
-    }
-    
-    
+    }    
   }
 
   function onPressRegister(){
