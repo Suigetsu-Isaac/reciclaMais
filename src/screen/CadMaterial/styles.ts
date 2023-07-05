@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:"#fff",
         width: '100%',
-        marginTop: '20%',
+        marginTop: '10%',
         justifyContent: 'center',
         
         

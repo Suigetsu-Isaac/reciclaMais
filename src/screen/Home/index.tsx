@@ -32,10 +32,13 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View>
+        <View style={{alignSelf: 'flex-end', bottom: 30, marginBottom: -20}}>
+          <Logout />
+          </View>
         <Text style={[styles.text, { color: "black" }]}>
           Informe a Quantidade de Materiais
         </Text>
-        <Logout />
+        
       </View>
       <View style={styles.itensContainer}>
         <Item
