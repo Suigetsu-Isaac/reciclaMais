@@ -5,7 +5,6 @@ import React, { useRef, useState } from "react";
 import styles from "./styles";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { user_table } from "../../../fakeDB/user_table";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import uuid from 'react-native-uuid';
@@ -17,8 +16,6 @@ export interface RegistrarDados{
   password:string
   type: 'adm' | 'client'
 }
-
-
 export default function Registro() {
 
   const [selectedAccount, setSelectedAccount] = useState('client');
@@ -33,8 +30,7 @@ export default function Registro() {
   const id = uuid.v1();
   
   async function salvarDados() {
-        
-    
+           
     if(typeof id == "string"){
      setDoc(doc(db,'user',id),{
         id,
@@ -53,12 +49,7 @@ export default function Registro() {
         }
       )
     }
-
-    
-
   }
-
-
   async function recuperarDados() {
     let users=[]
     
@@ -80,9 +71,7 @@ export default function Registro() {
     }catch(error){
       console.log("error ao recuperar dados: ",error)
     }
-    
-    
-    
+     
   };
 
 
@@ -102,20 +91,6 @@ export default function Registro() {
 
   function registerUser() {
 
-    let id = user_table[user_table.length - 1].id
-    id++;
-    const newUser = {
-      "id": id,
-      "username": username,
-      "phoneNumber": phoneNumber,
-      "email": email,
-      "password": password,
-      "type": selectedAccount
-    }
-
-    console.log(newUser)
-
-    user_table.push(newUser)
     salvarDados();
     getUser();
 
